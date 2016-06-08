@@ -1,0 +1,106 @@
+******************************************************************************************************************
+Mock catalogue of Classical Cepheids in PS1
+******************************************************************************************************************
+
+- Step 1: Producing normalized light-curves templates in PS1 grizy bands
+
+        1. Calibrating sample
+            I adopted the sample of 131 Cepheids from Monson \& Pierce 2011 for which I already have photometric data
+            in the UBVI bands from literature.
+            I performed a binning in period: I determine different templates light curves
+            for Cepheids with period
+            bin2:  3 days < P $\leqslant$5 days 
+            bin3:  5 days < P $\leqslant$7 days 
+            bin4:  7 days < P $\leqslant$9.5 days
+	    bin5:  10.5 days < P $\leqslant$ 13.5 days
+	    bin6:  13.5 days < P $\leqslant$ 15.5 days
+	    bin7:  15.5 days < P $\leqslant$ 20 days
+	    bin8:  20 days < P $\leqslant$ 30  days
+	    bin9:  30 days < P $\leqslant$ 100 days
+            
+            In fact, the shape of the light curves changes with the mass (i.e. the period) 
+            and the bump is on the decreasing branch in bin3, but already
+            closer to the maximum light in bin4.
+            
+            Note that if we want to compute templates for P<3 days,
+            we need to adopt SMC light curves, since there are no Galactic
+            calibrating Cepheids in this period range.
+            
+            The templates are computed by obtained normalized merged light curves
+            of the calibrating Cepheids in the specific bin.
+            The typical rms of the merged light curves is 0.03--0.05 mag.
+            This rms comes from photometric errors on the 
+            calibrating Cepheids individual light curves and by the finite binning in period
+            (intrinsic effect) of the merging.
+            
+        2. Photometric system transformation
+        
+            I adopted the color transformation in Tonry et al. 2012 to convert the 
+            BVIJH calibrating light curves in the PS1 photometric system (their Table 6).
+            I used the equation 6 in the linear form, i.e y= B0+B1*x
+        
+        
+        3. Amplitudes
+        
+            I obtained amplitudes in the different PS1 bands for the adopted calibrating Cepheids.
+            Amplitudes as a function of Log P are plotted in Fig. PS1_ampl_logp.jpg 
+            To predict the expected amplitude for a given period I adopted the median value in each period bin.
+	    For each simulated light curve I apply
+	    a random extraction from the dispersion around the median. This prevent us to have all the
+	    mock Cepheids with a given period to pulsate with the same aplitude. 
+ 
+            
+            Amplitudes in individual bands are necessary to rescale the normalized light-curve-templates.
+
+
+        4. Deriving absolute luminosities 
+            I adopted theoretical models to determine PL relations in the PS1 bands.
+            The relations are given in Table PS1_pl_rel.pdf in the form 
+            $$Mag_{band}= a_{band} + b_{band} * Log P $$.
+            I also derive a theoretical PL relation to predict mean magnitude in the 2MASS $K_{\rm{S}}$ band.
+            I used instead the relation from Marengo et al. 2009 to predict the W1 mean magnitude.
+     
+            Note that this relations is derived for LMC Cepheids in the Spitzer 3.4 um band. ***
+
+
+- Step 3: Choosing selected line-of-sights in PS1 real data
+        
+        1. LOS selection
+                I selected the following line-of sights:
+               [..........]
+        2. Epochs sampling
+                To obtain the epochs sampling for the selected LOS, I choose an object which is not saturated and is not too faint.
+                This choice is performed by selecting a random objet with psf_inst_sigma ~0.01
+                and getting its obs_MJD.
+            
+        3. Reddening from Marshall et al 2006 
+	I use the 3D extinction from Marshall et al . 2006, by using the same distance step for which they provide reddening values
+
+- Step 4: Producing the final mock catalog
+        
+        1. Period sampling
+            I have chosen a period sampling of 0.5 days
+        
+        2. Distance/ reddening sampling
+                I  repeat the same simulated light curve for each value of  dm and ebv  from the reddeing table
+                which will not produce saturated observations in the final magnitude.
+        
+
+        
+        3. Error modeling
+        In order to determine the photometric error on the observed magnitude I did as follows:
+        - I assumed a photometric uncertainty given by mag_err= sqrt((1.3*psf_inst_sigma)^2+ 0.015^2)
+        - I fitted the log(mag) vs log(err) with a third-order polynomial 
+        - I used the fitted relations to predict the error at a given magnitude in the simulated data. 
+        - For each simulated observation, I perform a random extraction from a gaussian distribution 
+        with a sigma given by the predicted photometric error and the uncertainty due to the empirical template (~0.05 mag). 
+        - I recompute the expected error by adopting the polynomial relations to the new value obtained by including random error effects
+        
+        
+        
+
+
+
+
+
+
